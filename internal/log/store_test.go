@@ -1,7 +1,6 @@
 package log
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -35,7 +34,6 @@ func testAppend(t *testing.T, s *store) {
 	for i := uint64(1); i < 4; i++ {
 		n, pos, err := s.Append(write)
 		require.NoError(t, err)
-		fmt.Println(n, pos, width, i)
 		require.Equal(t, pos+n, width*i)
 	}
 }
