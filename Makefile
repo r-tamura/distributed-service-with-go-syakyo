@@ -15,7 +15,30 @@ gencert:
 			-config=test/ca-config.json \
 			-profile=server \
 			test/server-csr.json | cfssljson -bare server
+
+	cfssl gencert \
+			-ca=ca.pem \
+			-ca-key=ca-key.pem \
+			-config=test/ca-config.json \
+			-profile=client \
+			test/client-csr.json | cfssljson -bare client
+
 	mv *.pem *.csr ${CONFIG_PATH}
+
+# 別のCAから発行した証明書でテストが失敗することを確認する
+.PHONY: genfraudcert
+genfraudcert:
+	cfssl gencert \
+			-initca test/ca2-csr.json | cfssljson -bare ca2
+	cfssl gencert \
+			-ca=ca2.pem \
+			-ca-key=ca2-key.pem \
+			-config=test/ca-config.json \
+			-profile=client \
+			test/client-csr.json | cfssljson -bare client2
+
+	mv *.pem *.csr ${CONFIG_PATH}
+
 
 .PHONY: compile
 compile:
