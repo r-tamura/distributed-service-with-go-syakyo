@@ -300,7 +300,6 @@ func (f *fsm) Restore(r io.ReadCloser) error {
 		}
 		if i == 0 {
 			f.log.Config.Segment.InitialOffset = record.Offset
-			fmt.Printf("restored: [%s] %d", f.log.Config.Raft.LocalID, f.log.Config.Segment.InitialOffset)
 			if err := f.log.Reset(); err != nil {
 				return err
 			}
@@ -337,7 +336,6 @@ func (l *logStore) LastIndex() (uint64, error) {
 }
 
 func (l *logStore) GetLog(index uint64, out *raft.Log) error {
-	fmt.Printf("getlog: index: [%s] %d\n", l.Config.Raft.LocalID, index)
 	in, err := l.Read(index)
 	if err != nil {
 		return err
